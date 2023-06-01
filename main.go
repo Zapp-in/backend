@@ -1,10 +1,15 @@
 package main
 
 import (
+	"zappin/controllers"
+	"zappin/services"
+
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
+var PostRoute *gin.RouterGroup
+
+func RunRouter() {
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
@@ -12,5 +17,14 @@ func main() {
 			"message": "Hello World!",
 		})
 	})
+
+	PostRoute := router.Group("/api/post")
+
+	PostRoute.GET("/", controllers.AllPosts)
+
 	router.Run(":8080")
+}
+func main() {
+	services.ConnectDatabase()
+	RunRouter()
 }

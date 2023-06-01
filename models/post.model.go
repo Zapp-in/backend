@@ -4,10 +4,10 @@ import "gorm.io/gorm"
 
 type Post struct {
 	gorm.Model
-	AuthorID    string `gorm:"size:255;" json:"author_id"`
-	Url         string `gorm:"size:255;" json:"url"`
-	Name        string `gorm:"size:255;" json:"name"`
-	Description string `gorm:"size:255;" json:"desc"`
-	Genre       string `gorm:"size:255;" json:"genre"`
-	Label       string `gorm:"size:255;" json:"label"`
+	AuthorID    string `gorm:"size:255;"`
+	MusicUrl    string `gorm:"size:255;"`
+	Name        string `gorm:"size:255;"`
+	Description string `gorm:"size:255;"`
+	Genre       string `gorm:"size:255;"`
+	Label       string `gorm:"size:255;"`
 }
