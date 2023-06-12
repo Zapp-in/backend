@@ -18,9 +18,15 @@ func RunRouter() {
 		})
 	})
 
+	UserRoute := router.Group("/api/user")
+	UserRoute.GET("/", controllers.AllUsers)
+	UserRoute.POST("/", controllers.AddUser)
+
+	//TODO: make route protected
 	PostRoute := router.Group("/api/post")
 
 	PostRoute.GET("/", controllers.AllPosts)
+	PostRoute.POST("/", controllers.AddPost)
 
 	router.Run(":8080")
 }

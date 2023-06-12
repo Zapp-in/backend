@@ -24,6 +24,5 @@ func ConnectDatabase() {
 	} else {
 		log.Println("connected to database")
 	}
-
 	DB.AutoMigrate(&models.User{}, &models.Post{})
 }
