@@ -7,5 +7,5 @@ type User struct {
 	ID     string `gorm:"primaryKey;size:255;"`
 	Email  string `gorm:"size:255;not null;unique"`
 	Name   string `gorm:"size:255;"`
-	Musics []Post `gorm:"foreignKey:AuthorID"`
+	Musics []string `gorm:"size:255"`
 }

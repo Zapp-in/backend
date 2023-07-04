@@ -2,6 +2,8 @@ package models
 
 import "gorm.io/gorm"
 
+
+
 type Post struct {
 	gorm.Model
 	AuthorID    string `gorm:"size:255;not null;unique;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
