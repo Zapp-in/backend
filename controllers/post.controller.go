@@ -9,16 +9,16 @@ import (
 )
 
 type Postdata struct {
-	AuthorID    string `gorm:"size:255;" json:"author_id" binding:"required"`
-	Name        string `gorm:"size:255;" json:"name" binding:"required"`
-	Description string `gorm:"size:255;" json:"desc"`
-	Genre       string `gorm:"size:255;" json:"genre" binding:"required"`
-	Label       string `gorm:"size:255;" json:"label" binding:"required"`
+	AuthorID    uint   `json:"author_id" binding:"required"`
+	Name        string `json:"name" binding:"required"`
+	Description string `json:"desc"`
+	Genre       string `json:"genre" binding:"required"`
+	Label       string `json:"label" binding:"required"`
 }
 
 type MusicData struct {
-	ID  string `gorm:"size:255;" json:"id"`
-	Url string `gorm:"size:255;" json:"url"`
+	ID  uint   `json:"id"`
+	Url string `json:"url"`
 }
 
 func AddMusic(c *gin.Context) {
@@ -31,8 +31,7 @@ func AddMusic(c *gin.Context) {
 	}
 
 	post := models.Post{}
-	post.MusicUrl = musicData.Url
-	if err := services.DB.Model(&post).Where("id = ?", musicData.ID).Update("music_url", musicData.Url).Error; err != nil {
+	if err := services.DB.Find(&post).Where("id = ?", musicData.ID).Update("music_url", musicData.Url).Error; err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"error": err.Error(),
 		})
