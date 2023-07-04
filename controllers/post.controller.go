@@ -31,7 +31,7 @@ func AddMusic(c *gin.Context) {
 	}
 
 	post := models.Post{}
-	if err := services.DB.Find(&post).Where("id = ?", musicData.ID).Update("music_url", musicData.Url).Error; err != nil {
+	if err := services.DB.Where("id = ?", musicData.ID).Find(&post).Update("music_url", musicData.Url).Error; err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"error": err.Error(),
 		})
@@ -54,7 +54,7 @@ func AddPost(c *gin.Context) {
 		return
 	}
 	post := models.Post{}
-	post.AuthorID = postData.AuthorID
+	post.UserID = postData.AuthorID
 	post.Name = postData.Name
 	post.Description = postData.Description
 	post.Genre = postData.Genre
@@ -65,7 +65,7 @@ func AddPost(c *gin.Context) {
 		})
 		return
 	}
-
+	//services.DB.Debug().Model(&models.User{}).Related()
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data":   post,

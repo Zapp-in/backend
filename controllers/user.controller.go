@@ -22,7 +22,7 @@ type UserData struct {
 
 func AllUsers(c *gin.Context) {
 	var users []models.User
-	if err := services.DB.Find(&users).Error; err != nil {
+	if err := services.DB.Preload("Musics").Find(&users).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -67,15 +67,15 @@ func UpdateUser(c *gin.Context) {
 		})
 		return
 	}
-	var user models.User
+	user := models.User{}
 	fmt.Println(data.ID)
-	if err := services.DB.Find(&user).Where("id = ?", data.ID).Update("name", data.Name).Error; err != nil {
+	if err := services.DB.Where("id = ?", data.ID).Find(&user).Update("name", data.Name).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
-	services.DB.Save(&user)
+	//services.DB.Save(&user)
 	//services.DB.Commit()
 	//user.Name = data.Name
 
