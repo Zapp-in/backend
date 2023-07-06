@@ -27,7 +27,7 @@ func RunRouter() {
 
 	PostRoute.GET("/", controllers.AllPosts)
 	PostRoute.POST("/", controllers.AddPost)
-	PostRoute.POST("/musicurl/update", controllers.AddMusic)
+	PostRoute.POST("/musicurl/update/:id", controllers.AddMusic)
 
 	router.Run(":8080")
 }

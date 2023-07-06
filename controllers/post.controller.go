@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"bytes"
+	"io"
 	"net/http"
+	"zappin/go-catbox"
 	"zappin/models"
 	"zappin/services"
 
@@ -22,8 +25,26 @@ type MusicData struct {
 }
 
 func AddMusic(c *gin.Context) {
-	var musicData MusicData
-	if err := c.ShouldBindJSON(&musicData); err != nil {
+	//var musicData MusicData
+	//if err := c.ShouldBindJSON(&musicData); err != nil {
+	//	c.JSON(http.StatusBadRequest, gin.H{
+	//		"error": err.Error(),
+	//	})
+	//	return
+	//}
+	id := c.Param("id")
+	f, _ := c.FormFile("file")
+	file, _ := f.Open()
+	defer file.Close()
+	buf := bytes.NewBuffer(nil)
+	if _, err := io.Copy(buf, file); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	url, err := catbox.New(nil).Upload(buf.Bytes(), string(id))
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -31,7 +52,7 @@ func AddMusic(c *gin.Context) {
 	}
 
 	post := models.Post{}
-	if err := services.DB.Where("id = ?", musicData.ID).Find(&post).Update("music_url", musicData.Url).Error; err != nil {
+	if err := services.DB.Where("id = ?", id).Find(&post).Update("music_url", url).Error; err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"error": err.Error(),
 		})
